@@ -1,2 +1,5 @@
 streamlit
+pandasstreamlit
 pandas
+sqlalchemy
+psycopg2-binary
