@@ -36,22 +36,19 @@ def init_db():
 
 init_db()
 
-# Custom SaaS Dark/Light Enterprise UI Styling inspired by Tiimi Dashboard Designs
+# Custom SaaS Dark/Light Enterprise UI Styling
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global App Background */
     .stApp {
         background-color: #f1f5f9;
         color: #0f172a;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* Hide default Streamlit elements */
     #MainMenu, header, footer {visibility: hidden;}
 
-    /* Enterprise Top App Header Bar */
     .saas-topbar {
         background: #0f172a;
         color: white;
@@ -73,7 +70,6 @@ st.markdown("""
         gap: 10px;
     }
 
-    /* SaaS Dashboard Header Banner */
     .college-banner {
         background: #ffffff;
         padding: 1.75rem 2rem;
@@ -100,7 +96,6 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Modern Card Containers */
     .custom-card, div.stExpander {
         background: #ffffff !important;
         padding: 1.25rem;
@@ -110,7 +105,6 @@ st.markdown("""
         margin-bottom: 1.25rem;
     }
 
-    /* Enhanced Interactive Buttons */
     .stButton > button {
         width: 100%;
         border-radius: 10px;
@@ -128,13 +122,11 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
 
-    /* Sidebar Clean Styling */
     section[data-testid="stSidebar"] {
         background: #ffffff;
         border-right: 1px solid #e2e8f0;
     }
 
-    /* SaaS Metric Cards */
     div[data-testid="stMetric"] {
         background: #ffffff;
         padding: 1rem 1.25rem;
@@ -425,4 +417,7 @@ else:
             d_list = []
             for s in stds:
                 with engine.connect() as conn:
-                    ar = con
+                    tot = conn.execute(text("SELECT COUNT(*) FROM attendance WHERE student_name=:u"), {"u": s[0]}).fetchone()[0]
+                    pre = conn.execute(text("SELECT COUNT(*) FROM attendance WHERE student_name=:u AND status='Present'"), {"u": s[0]}).fetchone()[0]
+                if tot > 0:
+                    pct = (pre / tot) * 10
