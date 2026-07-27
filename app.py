@@ -278,7 +278,7 @@ if not st.session_state['logged_in']:
                 fu = st.text_input("Registered Email", key="fsu").strip()
                 fp = st.text_input("New Password", type="password", key="fsp").strip()
                 if st.button("Reset Password"):
-                    with engine.begin() as conn:
+                    with engine.connect() as conn:
                         conn.execute(text("UPDATE users SET password=:p WHERE username=:u AND role='Student'"), {"p": fp, "u": fu})
                     st.success("Password Updated!")
 
@@ -314,7 +314,7 @@ if not st.session_state['logged_in']:
                 fu = st.text_input("Registered Email", key="ftu").strip()
                 fp = st.text_input("New Password", type="password", key="ftp").strip()
                 if st.button("Reset Password"):
-                    with engine.begin() as conn:
+                    with engine.connect() as conn:
                         conn.execute(text("UPDATE users SET password=:p WHERE username=:u AND role='Teacher'"), {"p": fp, "u": fu})
                     st.success("Password Updated!")
 
@@ -335,7 +335,7 @@ if not st.session_state['logged_in']:
                 ru = st.text_input("Username to Force Reset", key="au").strip()
                 rp = st.text_input("New Admin Password", type="password", key="ap").strip()
                 if st.button("Update Admin Password"):
-                    with engine.begin() as conn:
+                    with engine.connect() as conn:
                         conn.execute(text("UPDATE users SET password=:p WHERE username=:u AND role='Admin'"), {"p": rp, "u": ru})
                     st.success("Admin Password Updated!")
 
