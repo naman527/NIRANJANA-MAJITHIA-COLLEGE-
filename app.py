@@ -415,5 +415,6 @@ else:
                     if pct < 75.0:
                         d_list.append({"Student": s[0], "Course": s[1], "Year": s[2], "Present": pre, "Total": tot, "Percentage": f"{pct:.1f}%"})
             if d_list:
-                st.dataframe(pd.DataFrame(d_list), use_container_width=True)
-            else:
+                    st.dataframe(pd.DataFrame(d_list), use_container_width=True)
+            else:        
+                st.success("No attendance defaulters found below 75% or no attendance records logged yet.")
