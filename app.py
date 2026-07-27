@@ -164,12 +164,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-JOKES = [
-    "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
-    "Student in exam: Is this a trick question? Prof: No, it's a test! 🧠",
-    "Why was the computer late? It had a hard drive! 💻"
-]
-
 def get_shortfall(p, t):
     if t == 0:
         return "ℹ️ No lectures recorded yet."
@@ -247,9 +241,6 @@ if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
     st.session_state['user'] = None
     st.session_state['role'] = None
-
-if 'joke' not in st.session_state:
-    st.session_state['joke'] = random.choice(JOKES)
 
 if not st.session_state['logged_in']:
     col_l, col_m, col_r = st.columns([1, 1.5, 1])
@@ -420,4 +411,9 @@ else:
                     tot = conn.execute(text("SELECT COUNT(*) FROM attendance WHERE student_name=:u"), {"u": s[0]}).fetchone()[0]
                     pre = conn.execute(text("SELECT COUNT(*) FROM attendance WHERE student_name=:u AND status='Present'"), {"u": s[0]}).fetchone()[0]
                 if tot > 0:
-                    pct = (pre / tot) * 10
+                    pct = (pre / tot) * 100
+                    if pct < 75.0:
+                        d_list.append({"Student": s[0], "Course": s[1], "Year": s[2], "Present": pre, "Total": tot, "Percentage": f"{pct:.1f}%"})
+            if d_list:
+                st.dataframe(pd.DataFrame(d_list), use_container_width=True)
+            else:
